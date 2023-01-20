@@ -9,6 +9,7 @@ const options = [
     label: "Option Two",
   },
 ];
+
 const data = [
   {
     label: "One",
@@ -17,9 +18,13 @@ const data = [
 </script>
 
 <template>
-  <div>
+  <div class="bg">
     <MultiSelect :options="options" v-model="data" />
   </div>
 </template>
 
-<style></style>
+<style>
+.bg {
+  padding: 100px;
+}
+</style>

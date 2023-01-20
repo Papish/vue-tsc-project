@@ -1,14 +1,17 @@
 <script setup lang="ts">
-import { ref, watch } from "vue";
+import { ref, watch, type PropType } from "vue";
 
 const props = defineProps({
   options: {
-    type: Array<{ label: string }>,
+    type: Array as PropType<any[]>,
     default: () => [],
   },
   modelValue: {
-    type: Array<{ label: string }>,
+    type: Array as PropType<any[]>,
     default: () => [],
+  },
+  optionText: {
+    type:
   },
 });
 
@@ -42,20 +45,53 @@ watch(
 </script>
 
 <template>
-  <div>
-    <!-- selected option -->
-    <div v-for="(opt, i) in selectedOptions" :key="i" class="selected">
-      {{ opt.label }}
+  <div class="wrapper">
+    <div class="selector">
+      <div v-for="(opt, i) in selectedOptions" :key="i" class="selected">
+        {{ opt.label }}
+      </div>
     </div>
 
-    <!-- selectable options -->
-    <div
-      v-for="(opt, i) in options"
-      :key="i"
-      class="option"
-      @click="selectOption(opt)"
-    >
-      {{ opt.label }}
+    <div class="dropdown">
+      <div
+        v-for="(opt, i) in options"
+        :key="i"
+        class="option"
+        @click="selectOption(opt)"
+      >
+        {{ opt.label }}
+      </div>
     </div>
   </div>
 </template>
+
+<style scoped>
+.wrapper {
+  max-width: fit-content;
+}
+.selector {
+  border: 1px solid black;
+  min-width: 300px;
+  display: flex;
+  gap: 4px;
+  padding: 8px 16px;
+  border-radius: 4px;
+}
+.selected {
+  border: 1px solid red;
+  border-radius: 20px;
+  padding: 2px 6px;
+}
+.dropdown {
+  border: 1px solid black;
+  border-radius: 4px;
+  margin-top: 1px;
+}
+.option {
+  padding: 4px 16px;
+  cursor: pointer;
+}
+.option:hover {
+  background-color: #ccc;
+}
+</style>
