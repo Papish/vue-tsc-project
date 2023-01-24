@@ -1,7 +1,7 @@
 // @vitest-environment happy-dom
 
 import { mount } from "@vue/test-utils";
-import { test, assert } from "vitest";
+import { test, assert, expect } from "vitest";
 import MultiSelect from "../MultiSelect.vue";
 
 const mockSelectOptionsData = [
@@ -80,4 +80,34 @@ test("pre selected values", async () => {
   assert.equal(wrapper.findAll(".selected").length, 1);
 });
 
-test("option and model value format", () => {});
+test("option and model value format", () => {
+  const wrapper = mount(MultiSelect);
+  assert.equal(wrapper.props("optionText"), "label");
+  assert.equal(wrapper.props("optionId"), "value");
+});
+
+test("custom data option support", async () => {
+  const wrapper = mount(MultiSelect, {
+    props: {
+      options: [
+        {
+          code: "AU",
+          country: "Australia",
+        },
+        {
+          code: "NP",
+          country: "Nepal",
+        },
+      ],
+      optionText: "country",
+    },
+  });
+  assert.equal(wrapper.findAll(".option").length, 2);
+  expect(wrapper.findAll(".option")[0].text()).contain("Australia");
+  expect(wrapper.findAll(".option")[1].text()).contain("Nepal");
+
+  // testing selected value
+  await wrapper.find(".option").trigger("click");
+  expect(wrapper.findAll(".selected").length).toBe(1);
+  expect(wrapper.find(".selector").html()).contain("Australia");
+});

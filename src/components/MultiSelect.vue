@@ -10,8 +10,13 @@ const props = defineProps({
     type: Array as PropType<any[]>,
     default: () => [],
   },
+  optionId: {
+    type: String,
+    default: "value",
+  },
   optionText: {
-    type:
+    type: String,
+    default: "label",
   },
 });
 
@@ -19,11 +24,12 @@ const emits = defineEmits<{
   (e: "update:modelValue", data: Array<{ label: string }>): void;
 }>();
 
-const selectedOptions = ref<Array<{ label: string }>>([]);
+const selectedOptions = ref<any[]>([]);
 
-function selectOption(opt: { label: string }) {
+function selectOption(opt: any) {
   // Note: Add a unit test for below function
   const index = selectedOptions.value.findIndex((t) => t.label === opt.label);
+  console.log(index);
   if (index !== -1) {
     selectedOptions.value.splice(index, 1);
   } else {
@@ -48,7 +54,7 @@ watch(
   <div class="wrapper">
     <div class="selector">
       <div v-for="(opt, i) in selectedOptions" :key="i" class="selected">
-        {{ opt.label }}
+        {{ opt[props.optionText] }}
       </div>
     </div>
 
@@ -59,7 +65,7 @@ watch(
         class="option"
         @click="selectOption(opt)"
       >
-        {{ opt.label }}
+        {{ opt[props.optionText] }}
       </div>
     </div>
   </div>
